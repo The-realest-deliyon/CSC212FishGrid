@@ -198,7 +198,7 @@ public class FishGame {
 		System.out.println("Clicked on: "+x+","+y+ " world.canSwim(player,...)="+world.canSwim(player, x, y));
 		List<WorldObject> atPoint = world.find(x, y);
 		for(WorldObject wo: atPoint) {
-			if(wo.isRock()) {
+			if(wo.Rock()) {
 				wo.remove();
 			}
 		}
