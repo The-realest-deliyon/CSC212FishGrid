@@ -233,11 +233,14 @@ public class World {
 	 * @param followers a set of objects to follow the leader.
 	 */
 	public static void objectsFollow(WorldObject target, List<? extends WorldObject> followers) {
-		// TODO(FishGrid) Comment this method!
-		// What is recentPositions?
-		// What is followers?
-		// What is target?
-		// Why is past = putWhere[i+1]? Why not putWhere[i]?
+		//System.out.println(target.recentPositions); 
+		//What's printed is the fish's position at the start of the game 
+		//System.out.println(followers.size());// What is followers?
+		//the followers are the other fish that follow behind the main fish
+		//System.out.println();// The target is the fish that has to be collected
+		//System.out.println(); Why is past = putWhere[i+1]? Why not putWhere[i]?
+		//past is equal to the position of the fish as the fish continues to move 
+		// if it was putWhere[i] the fish wouldnt move across the grid.
 		List<IntPoint> putWhere = new ArrayList<>(target.recentPositions);
 		for (int i=0; i < followers.size() && i+1 < putWhere.size(); i++) {
 			// What is the deal with the two conditions in this for-loop?

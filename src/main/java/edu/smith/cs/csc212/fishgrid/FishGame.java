@@ -33,6 +33,9 @@ public class FishGame {
 	 */
 	List<Fish> found;
 	
+	List<Fish> home2;
+	
+	
 	/**
 	 * Number of steps!
 	 */
@@ -57,13 +60,14 @@ public class FishGame {
 		// Add a home!
 		home = world.insertFishHome();
 		
-		// TODO(lab) Generate some more rocks!
-		// TODO(lab) Make 5 into a constant, so it's easier to find & change.
-		for (int i=0; i<5; i++) {
+		final int num_rock = 5;
+		for (int i=0; i<num_rock; i++) {
 			world.insertRockRandomly();
 		}
 		
-		// TODO(lab) Make the snail!
+		world.insertSnailRandomly();
+		world.insertSnailRandomly();
+		
 		
 		// Make the player out of the 0th fish color.
 		player = new Fish(0, world);
@@ -103,6 +107,8 @@ public class FishGame {
 	public void step() {
 		// Keep track of how long the game has run.
 		this.stepsTaken += 1;
+		
+		wanderMissingFish();
 				
 		// These are all the objects in the world in the same cell as the player.
 		List<WorldObject> overlap = this.player.findSameCell();
@@ -110,19 +116,56 @@ public class FishGame {
 		overlap.remove(this.player);
 		
 		// If we find a fish, remove it from missing.
-		for (WorldObject wo : overlap) {
+		for (WorldObject thing : overlap) {
 			// It is missing if it's in our missing list.
-			if (missing.contains(wo)) {
+			if (missing.contains(thing)) {
 				// Remove this fish from the missing list.
-				missing.remove(wo);
+				missing.remove(thing);
 				
-				// Remove from world.
-				// TODO(lab): add to found instead! (So we see objectsFollow work!)
-				world.remove(wo);
+				found.add((Fish) thing);
 				
 				// Increase score when you find a fish!
 				score += 10;
 			}
+			
+			if (((Fish)thing).color == 0) {
+				score += 10;
+			}
+			if (((Fish)thing).color == 1) {
+				score += 20;
+			}
+			if (((Fish)thing).color == 2) {
+				score += 15;
+			}
+			if (((Fish)thing).color == 3) {
+				score += 10;
+			}
+			if (((Fish)thing).color == 4) {
+				score += 30;
+			}
+			if (((Fish)thing).color == 5) {
+				score += 40;
+			}
+			if (((Fish)thing).color == 6) {
+				score += 10;
+			}
+			if (((Fish)thing).color == 7) {
+				score += 15;
+			}
+			if (((Fish)thing).color == 8) {
+				score += 10;
+			}
+			if (((Fish)thing).color == 9) {
+				score += 20;
+			}
+		}
+		
+		if (home2 instanceof FishHome) {
+			for (Fish fish: found) {
+				home2.add(fish);
+				world.remove(fish);
+			}
+			found.clear();
 		}
 		
 		// Make sure missing fish *do* something.
@@ -141,7 +184,7 @@ public class FishGame {
 		for (Fish lost : missing) {
 			// 30% of the time, lost fish move randomly.
 			if (rand.nextDouble() < 0.3) {
-				// TODO(lab): What goes here?
+				lost.moveRandomly();
 			}
 		}
 	}
@@ -152,9 +195,13 @@ public class FishGame {
 	 * @param y - the y-tile.
 	 */
 	public void click(int x, int y) {
-		// TODO(FishGrid) use this print to debug your World.canSwim changes!
 		System.out.println("Clicked on: "+x+","+y+ " world.canSwim(player,...)="+world.canSwim(player, x, y));
 		List<WorldObject> atPoint = world.find(x, y);
+		for(WorldObject wo: atPoint) {
+			if(wo.isRock()) {
+				wo.remove();
+			}
+		}
 		// TODO(FishGrid) allow the user to click and remove rocks.
 
 	}
